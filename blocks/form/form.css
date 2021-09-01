@@ -1,0 +1,11 @@
+.form {
+  min-height: 272px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 918px) {
+  .form {
+    min-height: 259px;
+  }
+}

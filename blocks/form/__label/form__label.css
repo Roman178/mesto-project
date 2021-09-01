@@ -1,0 +1,8 @@
+.form__label {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.form__label:last-of-type {
+  margin-bottom: 45px;
+}

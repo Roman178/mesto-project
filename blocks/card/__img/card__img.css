@@ -1,0 +1,7 @@
+.card__img {
+  flex-grow: 1;
+  max-height: 282px;
+  width: 282px;
+  object-fit: cover;
+  object-position: center;
+}

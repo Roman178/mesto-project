@@ -1,0 +1,7 @@
+.card__like-btn_liked {
+  background-image: url("../../../../images/active-heart.svg");
+}
+
+.card__like-btn_liked:hover {
+  opacity: 1;
+}

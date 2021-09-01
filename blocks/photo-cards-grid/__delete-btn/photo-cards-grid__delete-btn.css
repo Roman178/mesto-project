@@ -1,0 +1,15 @@
+.photo-cards-grid__delete-btn {
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  transition: all 0.2s linear;
+}
+
+.photo-cards-grid__delete-btn:hover {
+  opacity: 0.7;
+}

@@ -1,0 +1,17 @@
+.profile__title-edit-box {
+  box-sizing: border-box;
+  max-width: 282px;
+  width: 100%;
+  padding-left: 46px;
+  padding-right: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (min-width: 918px) {
+  .profile__title-edit-box {
+    padding: 0;
+    max-width: 336px;
+  }
+}
