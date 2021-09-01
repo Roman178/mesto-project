@@ -81,22 +81,37 @@ editOpenBtn.addEventListener("click", function () {
   inputName.value = profileTitle.textContent;
   inputAbout.value = profileSubtitle.textContent;
   openPopup(popupEdit);
+  toggleButtonState(
+    [inputName, inputAbout],
+    popupEdit.querySelector(".form__btn-save")
+  );
 });
 
 editCloseBtn.addEventListener("click", function () {
   closePopup(popupEdit);
 });
 
-function handleFormEditSubmit(e) {
+function handleFormEditSubmit(e, form) {
   e.preventDefault();
+  console.log(e);
+  console.dir(form);
+
   profileTitle.textContent = inputName.value;
   profileSubtitle.textContent = inputAbout.value;
   closePopup(popupEdit);
 }
-formEdit.addEventListener("submit", handleFormEditSubmit);
+formEdit.addEventListener("submit", (evt) =>
+  handleFormEditSubmit(evt, formEdit)
+);
 
 // Обработка попапа добавления фото
-addOpenBtn.addEventListener("click", () => openPopup(popupAdd));
+addOpenBtn.addEventListener("click", () => {
+  openPopup(popupAdd);
+  toggleButtonState(
+    [...formAdd.querySelectorAll(".form__input")],
+    formAdd.querySelector(".form__btn-save")
+  );
+});
 addCloseBtn.addEventListener("click", () => closePopup(popupAdd));
 
 function handleFormAddSubmit(e) {
@@ -113,3 +128,40 @@ function handleFormAddSubmit(e) {
   closePopup(popupAdd);
 }
 formAdd.addEventListener("submit", handleFormAddSubmit);
+
+// Валидация
+function toggleButtonState(inputList, btn) {
+  if (inputList.map((i) => i.validity.valid).includes(false)) {
+    btn.classList.add("form__btn-save_inactive");
+    btn.disabled = true;
+  } else {
+    btn.classList.remove("form__btn-save_inactive");
+    btn.disabled = false;
+  }
+}
+
+function showInputError(inputEl, form) {
+  if (!inputEl.validity.valid) {
+    inputEl.classList.add("form__input_invalid");
+  } else {
+    inputEl.classList.remove("form__input_invalid");
+  }
+}
+
+document.querySelectorAll(".form").forEach((f) => {
+  const inputList = [...f.querySelectorAll(".form__input")];
+  const submitBtn = f.querySelector(".form__btn-save");
+
+  inputList.forEach((i) => {
+    i.addEventListener("input", (evt) => {
+      toggleButtonState(inputList, submitBtn);
+      showInputError(i, f);
+    });
+    i.addEventListener("blur", (evt) => {
+      showInputError(i, f);
+    });
+    i.addEventListener("focus", (evt) => {
+      showInputError(i, f);
+    });
+  });
+});

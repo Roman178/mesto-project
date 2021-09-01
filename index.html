@@ -62,26 +62,33 @@
 
     <div class="popup popup_type_edit">
       <div class="popup__container">
-        <form class="form" name="edit-form">
+        <form class="form" name="editForm" novalidate>
           <h2 class="form__title">Редактировать профиль</h2>
           <label for="user-name" class="form__label">
             <input
               required
+              minlength="2"
+              maxlength="40"
               class="form__input"
               type="text"
               placeholder="Имя"
               id="user-name"
-              name="user-name"
+              name="userName"
             />
+            <span class="user-name-error"></span>
           </label>
           <label for="about" class="form__label">
             <input
+              required
+              minlength="2"
+              maxlength="200"
               class="form__input"
               type="text"
               placeholder="О себе"
               id="about"
               name="about"
             />
+            <span class="about-error"></span>
           </label>
           <button type="submit" class="form__btn-save">Сохранить</button>
         </form>
@@ -91,17 +98,20 @@
 
     <div class="popup popup_type_add">
       <div class="popup__container">
-        <form class="form" name="new-place">
+        <form class="form" name="newPlace" novalidate>
           <h2 class="form__title">Новое место</h2>
           <label for="place-name" class="form__label">
             <input
               required
+              minlength="2"
+              maxlength="30"
               class="form__input"
               type="text"
               placeholder="Название"
               id="place-name"
-              name="place-name"
+              name="placeName"
             />
+            <span class="place-name-error"></span>
           </label>
           <label for="place-link" class="form__label">
             <input
@@ -110,8 +120,9 @@
               type="url"
               placeholder="Ссылка на картинку"
               id="place-link"
-              name="place-link"
+              name="placeLink"
             />
+            <span class="place-link-error"></span>
           </label>
           <button type="submit" class="form__btn-save">Создать</button>
         </form>
