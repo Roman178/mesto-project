@@ -8,10 +8,6 @@ module.exports = {
     main: "./src/scripts/index.js",
   },
 
-  stats: {
-    children: true,
-  },
-
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
@@ -48,11 +44,15 @@ module.exports = {
           "postcss-loader",
         ],
       },
+      {
+        test: /\.html$/,
+        loader: "html-loader",
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html", // путь к файлу index.html
+      template: "./src/index.html",
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin(),

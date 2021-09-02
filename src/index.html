@@ -9,16 +9,13 @@
   </head>
   <body class="page">
     <header class="header">
-      <img
-        class="header__logo"
-        src="<%=require('./images/logo.svg')%>"
-        alt="Лого"
-      />
+      <img class="header__logo" src="./images/logo.svg" alt="Лого" />
     </header>
+
     <main class="content">
       <section class="profile">
         <img
-          src="<%=require('./images/kusto.jpg')%>"
+          src="./images/kusto.jpg"
           alt="Фото пользователя."
           class="profile__avatar"
         />
@@ -36,7 +33,7 @@
         <button type="button" class="profile__add-btn">
           <img
             class="profile__add-icon"
-            src="<%=require('./images/add-btn.svg')%>"
+            src="./images/add-btn.svg"
             alt="Кнопка добавления фото"
           />
         </button>
@@ -46,13 +43,11 @@
           <template id="template-card">
             <li class="photo-cards-grid__photo-card">
               <button class="photo-cards-grid__delete-btn">
-                <img
-                  src="<%=require('')%>./images/delete-btn.svg"
-                  alt="Кнопка удалить"
+                <img src="./images/delete-btn.svg" alt="Кнопка удалить" />
                 />
               </button>
               <article class="card">
-                <img class="card__img" />
+                <img class="card__img" src="#" />
                 <div class="card__caption">
                   <h3 class="card__title"></h3>
                   <button type="button" class="card__like-btn"></button>
@@ -139,7 +134,7 @@
 
     <div class="popup popup_type_image">
       <figure class="popup__figure">
-        <img class="popup__img" src="" alt="" />
+        <img class="popup__img" src="#" alt="" />
         <figcaption class="popup__caption"></figcaption>
         <button class="popup__btn-close" type="button"></button>
       </figure>

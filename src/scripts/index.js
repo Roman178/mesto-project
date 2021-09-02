@@ -1,5 +1,5 @@
 import "../pages/index.css";
-import initialCards from "./initial-data";
+import { initialCards } from "./initial-data";
 
 // Глобальные переменные и функции
 const cardsList = document.querySelector(".photo-cards-grid__list");
