@@ -1,0 +1,4 @@
+.form__input-error_invisible {
+  opacity: 0;
+  transition: all 0.2s linear;
+}

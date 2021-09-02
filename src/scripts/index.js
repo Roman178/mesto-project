@@ -1,3 +1,6 @@
+import "../pages/index.css";
+import initialCards from "./initial-data";
+
 // Глобальные переменные и функции
 const cardsList = document.querySelector(".photo-cards-grid__list");
 
@@ -25,10 +28,16 @@ const caption = popupImage.querySelector(".popup__caption");
 
 function openPopup(currentPopup) {
   currentPopup.classList.add("popup_opened");
+  setTimeout(() => {
+    window.addEventListener("mousedown", closePopupByOutside);
+    window.addEventListener("keydown", closePopupByEsc);
+  }, 0);
 }
 
 function closePopup(currentPopup) {
   currentPopup.classList.remove("popup_opened");
+  window.removeEventListener("keydown", closePopupByEsc);
+  window.removeEventListener("mousedown", closePopupByOutside);
 }
 
 function toggleLike(currLikeBtn) {
@@ -52,7 +61,6 @@ function createCard(data) {
   cardImg.src = data.link;
   cardImg.alt = data.name;
   cardImg.addEventListener("click", () => {
-    // Замыкание
     pic.src = data.link;
     pic.alt = data.name;
     caption.textContent = data.name;
@@ -71,6 +79,24 @@ initialCards.forEach((data) => {
   return cardsList.append(card);
 });
 
+// Закрытие попапа по оверлею
+function closePopupByOutside(evt) {
+  if (
+    evt.target.closest(".popup__container") ||
+    evt.target.closest(".popup__figure")
+  ) {
+    return;
+  } else {
+    closePopup(document.querySelector(".popup_opened"));
+  }
+}
+
+// Закрытие попапа по Ecs
+function closePopupByEsc(evt) {
+  if (evt.key !== "Escape") return;
+  closePopup(document.querySelector(".popup_opened"));
+}
+
 // Обработка попапа картинки
 imageCloseBtn.addEventListener("click", () => {
   closePopup(popupImage);
@@ -83,8 +109,9 @@ editOpenBtn.addEventListener("click", function () {
   openPopup(popupEdit);
   toggleButtonState(
     [inputName, inputAbout],
-    popupEdit.querySelector(".form__btn-save")
+    formEdit.querySelector(".form__btn-save")
   );
+  [inputName, inputAbout].forEach((i) => showInputError(i, formEdit));
 });
 
 editCloseBtn.addEventListener("click", function () {
@@ -141,10 +168,14 @@ function toggleButtonState(inputList, btn) {
 }
 
 function showInputError(inputEl, form) {
+  const errorEl = form.querySelector(`#${inputEl.id}-error`);
+  errorEl.textContent = inputEl.validationMessage;
   if (!inputEl.validity.valid) {
     inputEl.classList.add("form__input_invalid");
+    errorEl.classList.remove("form__input-error_invisible");
   } else {
     inputEl.classList.remove("form__input_invalid");
+    errorEl.classList.add("form__input-error_invisible");
   }
 }
 

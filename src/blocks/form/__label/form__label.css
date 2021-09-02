@@ -1,0 +1,9 @@
+.form__label {
+  min-height: 46px;
+  margin-bottom: 11px;
+  width: 100%;
+}
+
+.form__label:last-of-type {
+  margin-bottom: 26px;
+}
