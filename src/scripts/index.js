@@ -1,5 +1,8 @@
 import "../pages/index.css";
 import { initialCards } from "./initial-data";
+import { openPopup, closePopup } from "./modal";
+import { handleFormEditSubmit, handleFormAddSubmit } from "./form";
+import { showInputError } from "./validation";
 
 // Глобальные переменные и функции
 const cardsList = document.querySelector(".photo-cards-grid__list");
@@ -20,25 +23,13 @@ const popupAdd = document.querySelector(".popup_type_add");
 const addCloseBtn = popupAdd.querySelector(".popup__btn-close");
 
 const formAdd = popupAdd.querySelector(".form");
+const inputPlace = formAdd.querySelector("#place-name");
+const inputLink = formAdd.querySelector("#place-link");
 
 const popupImage = document.querySelector(".popup_type_image");
 const imageCloseBtn = popupImage.querySelector(".popup__btn-close");
 const pic = popupImage.querySelector(".popup__img");
 const caption = popupImage.querySelector(".popup__caption");
-
-function openPopup(currentPopup) {
-  currentPopup.classList.add("popup_opened");
-  setTimeout(() => {
-    window.addEventListener("mousedown", closePopupByOutside);
-    window.addEventListener("keydown", closePopupByEsc);
-  }, 0);
-}
-
-function closePopup(currentPopup) {
-  currentPopup.classList.remove("popup_opened");
-  window.removeEventListener("keydown", closePopupByEsc);
-  window.removeEventListener("mousedown", closePopupByOutside);
-}
 
 function toggleLike(currLikeBtn) {
   currLikeBtn.classList.toggle("card__like-btn_liked");
@@ -79,24 +70,6 @@ initialCards.forEach((data) => {
   return cardsList.append(card);
 });
 
-// Закрытие попапа по оверлею
-function closePopupByOutside(evt) {
-  if (
-    evt.target.closest(".popup__container") ||
-    evt.target.closest(".popup__figure")
-  ) {
-    return;
-  } else {
-    closePopup(document.querySelector(".popup_opened"));
-  }
-}
-
-// Закрытие попапа по Ecs
-function closePopupByEsc(evt) {
-  if (evt.key !== "Escape") return;
-  closePopup(document.querySelector(".popup_opened"));
-}
-
 // Обработка попапа картинки
 imageCloseBtn.addEventListener("click", () => {
   closePopup(popupImage);
@@ -118,17 +91,15 @@ editCloseBtn.addEventListener("click", function () {
   closePopup(popupEdit);
 });
 
-function handleFormEditSubmit(e, form) {
-  e.preventDefault();
-  console.log(e);
-  console.dir(form);
-
-  profileTitle.textContent = inputName.value;
-  profileSubtitle.textContent = inputAbout.value;
-  closePopup(popupEdit);
-}
 formEdit.addEventListener("submit", (evt) =>
-  handleFormEditSubmit(evt, formEdit)
+  handleFormEditSubmit(
+    evt,
+    profileTitle,
+    profileSubtitle,
+    inputName,
+    inputAbout,
+    popupEdit
+  )
 );
 
 // Обработка попапа добавления фото
@@ -141,58 +112,65 @@ addOpenBtn.addEventListener("click", () => {
 });
 addCloseBtn.addEventListener("click", () => closePopup(popupAdd));
 
-function handleFormAddSubmit(e) {
-  e.preventDefault();
-
-  const inputPlace = formAdd.querySelector("#place-name");
-  const inputLink = formAdd.querySelector("#place-link");
-  const data = { name: inputPlace.value, link: inputLink.value };
-  const newCard = createCard(data);
-
-  cardsList.prepend(newCard);
-  formAdd.reset();
-
-  closePopup(popupAdd);
-}
-formAdd.addEventListener("submit", handleFormAddSubmit);
+formAdd.addEventListener("submit", (evt) =>
+  handleFormAddSubmit(
+    evt,
+    inputPlace,
+    inputLink,
+    createCard,
+    cardsList,
+    formAdd,
+    popupAdd
+  )
+);
 
 // Валидация
-function toggleButtonState(inputList, btn) {
+function toggleButtonState(
+  inputList,
+  btn,
+  btnInactiveSelector = "form__btn-save_inactive"
+) {
   if (inputList.map((i) => i.validity.valid).includes(false)) {
-    btn.classList.add("form__btn-save_inactive");
+    btn.classList.add(btnInactiveSelector);
     btn.disabled = true;
   } else {
-    btn.classList.remove("form__btn-save_inactive");
+    btn.classList.remove(btnInactiveSelector);
     btn.disabled = false;
   }
 }
 
-function showInputError(inputEl, form) {
-  const errorEl = form.querySelector(`#${inputEl.id}-error`);
-  errorEl.textContent = inputEl.validationMessage;
-  if (!inputEl.validity.valid) {
-    inputEl.classList.add("form__input_invalid");
-    errorEl.classList.remove("form__input-error_invisible");
-  } else {
-    inputEl.classList.remove("form__input_invalid");
-    errorEl.classList.add("form__input-error_invisible");
-  }
-}
+function enableValidation({
+  formSelector,
+  inputSelector,
+  saveBtnSelector,
+  btnInactiveSelector,
+  inputErrorClass,
+  errorClass,
+}) {
+  document.querySelectorAll(formSelector).forEach((f) => {
+    const inputList = [...f.querySelectorAll(inputSelector)];
+    const submitBtn = f.querySelector(saveBtnSelector);
 
-document.querySelectorAll(".form").forEach((f) => {
-  const inputList = [...f.querySelectorAll(".form__input")];
-  const submitBtn = f.querySelector(".form__btn-save");
-
-  inputList.forEach((i) => {
-    i.addEventListener("input", (evt) => {
-      toggleButtonState(inputList, submitBtn);
-      showInputError(i, f);
-    });
-    i.addEventListener("blur", (evt) => {
-      showInputError(i, f);
-    });
-    i.addEventListener("focus", (evt) => {
-      showInputError(i, f);
+    inputList.forEach((i) => {
+      i.addEventListener("input", (evt) => {
+        toggleButtonState(inputList, submitBtn, btnInactiveSelector);
+        showInputError(i, f, inputErrorClass, errorClass);
+      });
+      i.addEventListener("blur", (evt) => {
+        showInputError(i, f, inputErrorClass, errorClass);
+      });
+      i.addEventListener("focus", (evt) => {
+        showInputError(i, f, inputErrorClass, errorClass);
+      });
     });
   });
+}
+
+enableValidation({
+  formSelector: ".form",
+  inputSelector: ".form__input",
+  saveBtnSelector: ".form__btn-save",
+  btnInactiveSelector: "form__btn-save_inactive",
+  inputErrorClass: "form__input_invalid",
+  errorClass: "form__input-error_invisible",
 });
