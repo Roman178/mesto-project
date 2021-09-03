@@ -1,4 +1,5 @@
 import { closePopup } from "./modal";
+import { createCard } from "./card";
 
 export function handleFormEditSubmit(
   e,
@@ -19,7 +20,6 @@ export function handleFormAddSubmit(
   e,
   inputText,
   inputUrl,
-  createCardFunc,
   elementToPrependCard,
   currForm,
   currPopup
@@ -27,7 +27,7 @@ export function handleFormAddSubmit(
   e.preventDefault();
 
   const data = { name: inputText.value, link: inputUrl.value };
-  const newCard = createCardFunc(data);
+  const newCard = createCard(data);
   elementToPrependCard.prepend(newCard);
   currForm.reset();
   closePopup(currPopup);
