@@ -1,5 +1,6 @@
 import { closePopup } from "./modal";
 import { createCard } from "./card";
+import { updateUser, addCard } from "../api/api";
 
 export function handleFormEditSubmit(
   e,
@@ -11,9 +12,14 @@ export function handleFormEditSubmit(
 ) {
   e.preventDefault();
 
-  title.textContent = inputTitle.value;
-  subtitle.textContent = inputSubtitle.value;
-  closePopup(currPopup);
+  updateUser(inputTitle.value, inputSubtitle.value)
+    .then((response) => {
+      console.log(response);
+      title.textContent = response.name;
+      subtitle.textContent = response.about;
+      closePopup(currPopup);
+    })
+    .catch((err) => console.error(err));
 }
 
 export function handleFormAddSubmit(
@@ -26,9 +32,12 @@ export function handleFormAddSubmit(
 ) {
   e.preventDefault();
 
-  const data = { name: inputText.value, link: inputUrl.value };
-  const newCard = createCard(data);
-  elementToPrependCard.prepend(newCard);
-  currForm.reset();
-  closePopup(currPopup);
+  addCard(inputText.value, inputUrl.value)
+    .then((response) => {
+      const newCard = createCard({ name: response.name, link: response.link });
+      elementToPrependCard.prepend(newCard);
+      currForm.reset();
+      closePopup(currPopup);
+    })
+    .catch((err) => console.error(err));
 }

@@ -1,13 +1,13 @@
 import "../pages/index.css";
-import { initialCards } from "./initial-data";
-import { openPopup, closePopup } from "./modal";
-import { handleFormEditSubmit, handleFormAddSubmit } from "./form";
+import { openPopup, closePopup } from "../components/modal";
+import { handleFormEditSubmit, handleFormAddSubmit } from "../components/form";
 import {
   showInputError,
   toggleButtonState,
   enableValidation,
-} from "./validation";
-import { createCard } from "./card";
+} from "../components/validation";
+import { createCard } from "../components/card";
+import { getCards, getUser, updateUser } from "../api/api";
 
 // Элементы
 const cardsList = document.querySelector(".photo-cards-grid__list");
@@ -85,7 +85,24 @@ enableValidation({
 });
 
 // Вставка карточек в разметку
-initialCards.forEach((data) => {
-  const card = createCard(data);
-  return cardsList.append(card);
-});
+getCards()
+  .then((response) => {
+    console.log(response);
+    response.forEach((data) => {
+      const card = createCard(data);
+      return cardsList.append(card);
+    });
+  })
+  .catch((err) => console.error(err));
+
+// Заполнение данных профиля
+async function loadUserData() {
+  try {
+    const response = await getUser();
+    profileTitle.textContent = response.name;
+    profileSubtitle.textContent = response.about;
+  } catch (err) {
+    throw new Error(`Ошибка загрузки данных профиля - ${err.message}`);
+  }
+}
+loadUserData();
