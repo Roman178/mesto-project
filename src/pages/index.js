@@ -84,19 +84,8 @@ enableValidation({
   errorClass: "form__input-error_invisible",
 });
 
-// Вставка карточек в разметку
-getCards()
-  .then((response) => {
-    console.log(response);
-    response.forEach((data) => {
-      const card = createCard(data);
-      return cardsList.append(card);
-    });
-  })
-  .catch((err) => console.error(err));
-
 // Заполнение данных профиля
-async function loadUserData() {
+export async function loadUserData() {
   try {
     const response = await getUser();
     profileTitle.textContent = response.name;
@@ -105,4 +94,15 @@ async function loadUserData() {
     throw new Error(`Ошибка загрузки данных профиля - ${err.message}`);
   }
 }
-loadUserData();
+// loadUserData();
+
+// Вставка карточек в разметку, после вставки данных в профиль
+getCards()
+  .then(async (response) => {
+    await loadUserData();
+    response.forEach((data) => {
+      const card = createCard(data);
+      return cardsList.append(card);
+    });
+  })
+  .catch((err) => console.error(err));

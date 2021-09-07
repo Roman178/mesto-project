@@ -55,6 +55,17 @@ export async function addCard(name, link) {
   if (res.ok) {
     return res.json();
   }
-
   return Promise.reject(`Ошибка добавления карточки ${res.status}`);
+}
+
+export function deleteCardApi(cardId) {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка удаления карточки ${res.status}`);
+  });
 }

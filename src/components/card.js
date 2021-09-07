@@ -1,5 +1,6 @@
 import { openPopup, closePopup } from "./modal";
 import { profileTitle } from "../pages/index";
+import { deleteCardApi } from "../api/api";
 
 const popupImage = document.querySelector(".popup_type_image");
 const imageCloseBtn = popupImage.querySelector(".popup__btn-close");
@@ -7,11 +8,20 @@ const pic = popupImage.querySelector(".popup__img");
 const caption = popupImage.querySelector(".popup__caption");
 
 function toggleLike(currLikeBtn) {
-  currLikeBtn.classList.toggle("card__like-btn_liked");
+  if (currLikeBtn.classList.contains("card__like-btn_liked")) {
+    currLikeBtn.classList.remove("card__like-btn_liked");
+  } else {
+    currLikeBtn.classList.add("card__like-btn_liked");
+  }
+  // currLikeBtn.classList.toggle("card__like-btn_liked");
 }
 
-function deleteCard(el) {
+function deleteCard(el, cardId) {
+  console.log(cardId);
   el.closest(".photo-cards-grid__photo-card").remove();
+  deleteCardApi(cardId)
+    .then((response) => console.log(response))
+    .catch((err) => console.error(err));
 }
 
 export function createCard(data) {
@@ -23,11 +33,14 @@ export function createCard(data) {
   const cardTitle = card.querySelector(".card__title");
   const likeBtn = card.querySelector(".card__like-btn");
   const likeCounter = card.querySelector(".card__like-counter");
-  const deleteBtn = card.querySelector(".photo-cards-grid__delete-btn");
-  if (data.owner.name !== profileTitle.textContent) {
-    deleteBtn.remove();
-  } else {
-    deleteBtn.addEventListener("click", () => deleteCard(deleteBtn));
+
+  if (data.owner.name === profileTitle.textContent) {
+    const deleteBtnTemplate = card.querySelector("#delete-btn").content;
+    const deleteBtn = deleteBtnTemplate
+      .querySelector(".photo-cards-grid__delete-btn")
+      .cloneNode(true);
+    deleteBtn.addEventListener("click", () => deleteCard(deleteBtn, data._id));
+    card.prepend(deleteBtn);
   }
 
   cardImg.src = data.link;
