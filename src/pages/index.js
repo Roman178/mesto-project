@@ -20,7 +20,7 @@ const formEdit = popupEdit.querySelector(".form");
 const inputName = formEdit.querySelector("#user-name");
 const inputAbout = formEdit.querySelector("#about");
 
-const profileTitle = document.querySelector(".profile__title");
+export const profileTitle = document.querySelector(".profile__title");
 const profileSubtitle = document.querySelector(".profile__subtitle");
 
 const addOpenBtn = document.querySelector(".profile__add-btn");

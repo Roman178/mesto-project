@@ -34,7 +34,7 @@ export function handleFormAddSubmit(
 
   addCard(inputText.value, inputUrl.value)
     .then((response) => {
-      const newCard = createCard({ name: response.name, link: response.link });
+      const newCard = createCard({ ...response });
       elementToPrependCard.prepend(newCard);
       currForm.reset();
       closePopup(currPopup);

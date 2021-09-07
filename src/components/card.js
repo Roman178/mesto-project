@@ -1,4 +1,5 @@
 import { openPopup, closePopup } from "./modal";
+import { profileTitle } from "../pages/index";
 
 const popupImage = document.querySelector(".popup_type_image");
 const imageCloseBtn = popupImage.querySelector(".popup__btn-close");
@@ -21,7 +22,13 @@ export function createCard(data) {
   const cardImg = card.querySelector(".card__img");
   const cardTitle = card.querySelector(".card__title");
   const likeBtn = card.querySelector(".card__like-btn");
+  const likeCounter = card.querySelector(".card__like-counter");
   const deleteBtn = card.querySelector(".photo-cards-grid__delete-btn");
+  if (data.owner.name !== profileTitle.textContent) {
+    deleteBtn.remove();
+  } else {
+    deleteBtn.addEventListener("click", () => deleteCard(deleteBtn));
+  }
 
   cardImg.src = data.link;
   cardImg.alt = data.name;
@@ -32,8 +39,8 @@ export function createCard(data) {
     openPopup(popupImage);
   });
   cardTitle.textContent = data.name;
+  likeCounter.textContent = data.likes.length;
   likeBtn.addEventListener("click", () => toggleLike(likeBtn));
-  deleteBtn.addEventListener("click", () => deleteCard(deleteBtn));
 
   return card;
 }
