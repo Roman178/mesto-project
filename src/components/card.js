@@ -1,19 +1,28 @@
 import { openPopup, closePopup } from "./modal";
 import { profileTitle } from "../pages/index";
-import { deleteCardApi } from "../api/api";
+import { deleteCardApi, addLike, removeLike } from "../api/api";
 
 const popupImage = document.querySelector(".popup_type_image");
 const imageCloseBtn = popupImage.querySelector(".popup__btn-close");
 const pic = popupImage.querySelector(".popup__img");
 const caption = popupImage.querySelector(".popup__caption");
 
-function toggleLike(currLikeBtn) {
+function toggleLike(currLikeBtn, likeCounter, cardId) {
   if (currLikeBtn.classList.contains("card__like-btn_liked")) {
-    currLikeBtn.classList.remove("card__like-btn_liked");
+    removeLike(cardId)
+      .then((response) => {
+        currLikeBtn.classList.remove("card__like-btn_liked");
+        likeCounter.textContent = response.likes.length;
+      })
+      .catch((err) => console.error(err));
   } else {
-    currLikeBtn.classList.add("card__like-btn_liked");
+    addLike(cardId)
+      .then((response) => {
+        currLikeBtn.classList.add("card__like-btn_liked");
+        likeCounter.textContent = response.likes.length;
+      })
+      .catch((err) => console.error(err));
   }
-  // currLikeBtn.classList.toggle("card__like-btn_liked");
 }
 
 function deleteCard(el, cardId) {
@@ -34,7 +43,7 @@ export function createCard(data) {
   const likeBtn = card.querySelector(".card__like-btn");
   const likeCounter = card.querySelector(".card__like-counter");
 
-  if (data.owner.name === profileTitle.textContent) {
+  if (data.owner._id === profileTitle.id) {
     const deleteBtnTemplate = card.querySelector("#delete-btn").content;
     const deleteBtn = deleteBtnTemplate
       .querySelector(".photo-cards-grid__delete-btn")
@@ -52,8 +61,14 @@ export function createCard(data) {
     openPopup(popupImage);
   });
   cardTitle.textContent = data.name;
+
   likeCounter.textContent = data.likes.length;
-  likeBtn.addEventListener("click", () => toggleLike(likeBtn));
+  if (data.likes.some((likeOwner) => likeOwner._id === profileTitle.id)) {
+    likeBtn.classList.add("card__like-btn_liked");
+  }
+  likeBtn.addEventListener("click", () =>
+    toggleLike(likeBtn, likeCounter, data._id)
+  );
 
   return card;
 }

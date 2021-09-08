@@ -1,0 +1,9 @@
+.form_type_avatar {
+  min-height: 202px;
+}
+
+@media screen and (min-width: 918px) {
+  .form_type_avatar {
+    min-height: 202px;
+  }
+}

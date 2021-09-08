@@ -69,3 +69,43 @@ export function deleteCardApi(cardId) {
     return Promise.reject(`Ошибка удаления карточки ${res.status}`);
   });
 }
+
+export async function addLike(cardId) {
+  const res = await fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: "PUT",
+    headers: config.headers,
+  });
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(`Ошибка добавления лайка ${res.status}`);
+}
+
+export async function removeLike(cardId) {
+  const res = await fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  });
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(`Ошибка удаления лайка ${res.status}`);
+}
+
+export async function updateAvatar(avaLink) {
+  const res = await fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: avaLink,
+    }),
+  });
+
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(`Ошибка обновления аватарки ${res.status}`);
+}

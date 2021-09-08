@@ -13,11 +13,14 @@
 
     <main class="content">
       <section class="profile">
-        <img
-          src="./images/kusto.jpg"
-          alt="Фото пользователя."
-          class="profile__avatar"
-        />
+        <div class="profile__avatar-box">
+          <img
+            src="./images/initial-ava.png"
+            alt="Фото пользователя."
+            class="profile__avatar"
+          />
+          <button class="profile__btn-change-avatar"></button>
+        </div>
         <div class="profile__text-box">
           <div class="profile__title-edit-box">
             <h1 class="profile__title"></h1>
@@ -130,6 +133,27 @@
             <span class="form__input-error" id="place-link-error"></span>
           </label>
           <button type="submit" class="form__btn-save">Создать</button>
+        </form>
+        <button class="popup__btn-close" type="button"></button>
+      </div>
+    </div>
+
+    <div class="popup popup_type_avatar">
+      <div class="popup__container">
+        <form class="form form_type_avatar" name="avatarForm" novalidate>
+          <h2 class="form__title">Обновить аватар</h2>
+          <label for="avatar-link" class="form__label">
+            <input
+              required
+              class="form__input"
+              type="url"
+              placeholder="Ссылка на аватар"
+              id="avatar-link"
+              name="avatarLink"
+            />
+            <span class="form__input-error" id="avatar-link-error"></span>
+          </label>
+          <button type="submit" class="form__btn-save">Сохранить</button>
         </form>
         <button class="popup__btn-close" type="button"></button>
       </div>
