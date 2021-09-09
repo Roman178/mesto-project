@@ -6,16 +6,18 @@ const config = {
   },
 };
 
+function checkResponse(res, text) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`${text} ${res.status}`);
+}
+
 export async function getCards() {
   const res = await fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
   });
-  if (res.ok) {
-    const data = await res.json();
-    return data;
-  }
-
-  return Promise.reject(`Ошибка ${res.status}`);
+  return checkResponse(res, "Ошибка загрузки карточек");
 }
 
 export function getUser() {
@@ -38,8 +40,7 @@ export function updateUser(name, about) {
       about,
     }),
   }).then((res) => {
-    if (res.ok) return res.json();
-    return Promise.reject(`Ошибка обновления данных профиля ${res.status}`);
+    return checkResponse(res, "Ошибка обновления данных профиля");
   });
 }
 
@@ -52,10 +53,7 @@ export async function addCard(name, link) {
       link,
     }),
   });
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка добавления карточки ${res.status}`);
+  return checkResponse(res, "Ошибка добавления карточки");
 }
 
 export function deleteCardApi(cardId) {
@@ -63,10 +61,7 @@ export function deleteCardApi(cardId) {
     method: "DELETE",
     headers: config.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка удаления карточки ${res.status}`);
+    return checkResponse(res, "Ошибка удаления карточки");
   });
 }
 
@@ -75,11 +70,7 @@ export async function addLike(cardId) {
     method: "PUT",
     headers: config.headers,
   });
-  if (res.ok) {
-    return res.json();
-  }
-
-  return Promise.reject(`Ошибка добавления лайка ${res.status}`);
+  return checkResponse(res, "Ошибка добавления лайка");
 }
 
 export async function removeLike(cardId) {
@@ -87,11 +78,7 @@ export async function removeLike(cardId) {
     method: "DELETE",
     headers: config.headers,
   });
-  if (res.ok) {
-    return res.json();
-  }
-
-  return Promise.reject(`Ошибка удаления лайка ${res.status}`);
+  return checkResponse(res, "Ошибка удаления лайка");
 }
 
 export async function updateAvatar(avaLink) {
@@ -102,10 +89,5 @@ export async function updateAvatar(avaLink) {
       avatar: avaLink,
     }),
   });
-
-  if (res.ok) {
-    return res.json();
-  }
-
-  return Promise.reject(`Ошибка обновления аватарки ${res.status}`);
+  return checkResponse(res, "Ошибка обновления аватарки");
 }

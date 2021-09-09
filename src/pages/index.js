@@ -131,25 +131,16 @@ enableValidation({
   errorClass: "form__input-error_invisible",
 });
 
-// Заполнение данных профиля
-export async function loadUserData() {
-  try {
-    const response = await getUser();
-    profileTitle.textContent = response.name;
-    profileTitle.id = response._id;
-    profileSubtitle.textContent = response.about;
-    profileImgAvatar.src = response.avatar;
-  } catch (err) {
-    throw new Error(`Ошибка загрузки данных профиля - ${err.message}`);
-  }
-}
-// loadUserData();
+Promise.all([getUser(), getCards()])
+  .then((values) => {
+    //Вставка данных в профиль
+    profileTitle.textContent = values[0].name;
+    profileTitle.id = values[0]._id;
+    profileSubtitle.textContent = values[0].about;
+    profileImgAvatar.src = values[0].avatar;
 
-// Вставка карточек в разметку, после вставки данных в профиль.
-getCards()
-  .then(async (response) => {
-    await loadUserData();
-    response.forEach((data) => {
+    // Вставка карточек в разметку
+    values[1].forEach((data) => {
       const card = createCard(data);
       return cardsList.append(card);
     });

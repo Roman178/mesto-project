@@ -27,9 +27,10 @@ function toggleLike(currLikeBtn, likeCounter, cardId) {
 
 function deleteCard(el, cardId) {
   console.log(cardId);
-  el.closest(".photo-cards-grid__photo-card").remove();
   deleteCardApi(cardId)
-    .then((response) => console.log(response))
+    .then(() => {
+      el.closest(".photo-cards-grid__photo-card").remove();
+    })
     .catch((err) => console.error(err));
 }
 

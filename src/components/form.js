@@ -21,10 +21,12 @@ export function handleFormEditSubmit(
       console.log(response);
       title.textContent = response.name;
       subtitle.textContent = response.about;
-      submitBtn.textContent = initialText;
       closePopup(currPopup);
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
+    .finally(() => {
+      submitBtn.textContent = initialText;
+    });
 }
 
 export function handleFormAddSubmit(
@@ -45,10 +47,12 @@ export function handleFormAddSubmit(
       const newCard = createCard({ ...response });
       elementToPrependCard.prepend(newCard);
       currForm.reset();
-      submitBtn.textContent = initialText;
       closePopup(currPopup);
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
+    .finally(() => {
+      submitBtn.textContent = initialText;
+    });
 }
 
 export function handleFormUpdtAvatar(
@@ -70,5 +74,8 @@ export function handleFormUpdtAvatar(
       submitBtn.textContent = initialText;
       closePopup(avaPopup);
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
+    .finally(() => {
+      submitBtn.textContent = initialText;
+    });
 }
