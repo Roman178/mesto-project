@@ -13,6 +13,19 @@ import {
 import { createCard } from "../components/card";
 import { getCards, getUser, updateUser } from "../api/api";
 
+import { ApiClass } from "../api/ApiClass";
+
+const api = new ApiClass({
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-1",
+  headers: {
+    authorization: "e57c7ce8-a3e3-4b01-ae89-02cce4158d9f",
+    "Content-Type": "application/json",
+  },
+});
+
+api.getInitialCards().then((cards) => console.log(cards));
+// api.addLike("6165e0e4b9c1250012049633").then((data) => console.log(data));
+
 // Элементы
 const cardsList = document.querySelector(".photo-cards-grid__list");
 
