@@ -52,7 +52,8 @@ Promise.all([api.getUser(), api.getInitialCards()]).then(([user, cards]) => {
     ".photo-cards-grid__list"
   );
 
-  // cardsContainer.createSection();
+  cardsContainer.createSection();
+
   // const testH1 = document.createElement("h1");
   // testH1.textContent = "HEllo H1";
   // testH1.classList.add("profile__title");
