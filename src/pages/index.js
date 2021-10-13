@@ -17,6 +17,7 @@ import { ApiClass } from "../api/ApiClass";
 import { CardClass } from "../components/classes/CardClass";
 import { Section } from "../components/classes/Section";
 import { PopupWithImage } from "../components/classes/PopupWithImage";
+import { PopupWithForm } from "../components/classes/PopupWithForm";
 
 const api = new ApiClass({
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-1",
@@ -29,7 +30,21 @@ const api = new ApiClass({
 const popupImg = new PopupWithImage(".popup_type_image");
 popupImg.setEventListeners();
 
+const editProfileForm = new PopupWithForm(".popup_type_edit", (evt) =>
+  handleFormEditSubmit(
+    evt,
+    profileTitle,
+    profileSubtitle,
+    inputName,
+    inputAbout,
+    editProfileForm,
+    submitBtnFormEdit
+  )
+);
+editProfileForm.setEventListeners();
+
 Promise.all([api.getUser(), api.getInitialCards()]).then(([user, cards]) => {
+  console.log(user);
   const cardsContainer = new Section(
     {
       items: cards,
@@ -105,16 +120,22 @@ updAvatarCloseBtn.addEventListener("click", () => {
 });
 
 // Обработка кнопок попапа реактирования профиля
-editOpenBtn.addEventListener("click", function () {
-  inputName.value = profileTitle.textContent;
-  inputAbout.value = profileSubtitle.textContent;
-  openPopup(popupEdit);
-  toggleButtonState(
-    [inputName, inputAbout],
-    formEdit.querySelector(".form__btn-save")
-  );
-  [inputName, inputAbout].forEach((i) => showInputError(i, formEdit));
-});
+
+editOpenBtn.addEventListener("click", () => editProfileForm.open());
+
+// editOpenBtn.addEventListener("click", function () {
+//   inputName.value = profileTitle.textContent;
+//   inputAbout.value = profileSubtitle.textContent;
+
+//   editProfileForm._getInputValues();
+
+//   openPopup(popupEdit);
+//   toggleButtonState(
+//     [inputName, inputAbout],
+//     formEdit.querySelector(".form__btn-save")
+//   );
+//   [inputName, inputAbout].forEach((i) => showInputError(i, formEdit));
+// });
 
 editCloseBtn.addEventListener("click", function () {
   closePopup(popupEdit);
@@ -132,17 +153,17 @@ addOpenBtn.addEventListener("click", () => {
 addCloseBtn.addEventListener("click", () => closePopup(popupAdd));
 
 // Слушатели на сабмит форм
-formEdit.addEventListener("submit", (evt) =>
-  handleFormEditSubmit(
-    evt,
-    profileTitle,
-    profileSubtitle,
-    inputName,
-    inputAbout,
-    popupEdit,
-    submitBtnFormEdit
-  )
-);
+// formEdit.addEventListener("submit", (evt) =>
+//   handleFormEditSubmit(
+//     evt,
+//     profileTitle,
+//     profileSubtitle,
+//     inputName,
+//     inputAbout,
+//     popupEdit,
+//     submitBtnFormEdit
+//   )
+// );
 
 formAdd.addEventListener("submit", (evt) =>
   handleFormAddSubmit(
