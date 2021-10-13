@@ -4,23 +4,16 @@ export class Section {
     this._renderer = renderer;
     this._container = document.querySelector(containerSelector);
 
-    this._renderer = this._renderer.bind(this);
+    this.addItem = this.addItem.bind(this);
   }
 
   addItem(element) {
     this._container.append(element);
   }
 
-  createElement() {
+  createSection() {
     this._items.forEach((item) => {
-      const card = this._renderer(item);
-      this.addItem(card);
+      this._renderer(item);
     });
   }
-
-  getContainer() {
-    return this._container;
-  }
 }
-
-const section = new Section({ items: [], renderer: card.generate }, "#");

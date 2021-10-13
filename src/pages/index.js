@@ -14,6 +14,9 @@ import { createCard } from "../components/card";
 import { getCards, getUser, updateUser } from "../api/api";
 
 import { ApiClass } from "../api/ApiClass";
+import { CardClass } from "../components/classes/CardClass";
+import { Section } from "../components/classes/Section";
+import { PopupWithImage } from "../components/classes/PopupWithImage";
 
 const api = new ApiClass({
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-1",
@@ -23,8 +26,37 @@ const api = new ApiClass({
   },
 });
 
-api.getInitialCards().then((cards) => console.log(cards));
-// api.addLike("6165e0e4b9c1250012049633").then((data) => console.log(data));
+const popupImg = new PopupWithImage(".popup_type_image");
+popupImg.setEventListeners();
+
+Promise.all([api.getUser(), api.getInitialCards()]).then(([user, cards]) => {
+  const cardsContainer = new Section(
+    {
+      items: cards,
+      renderer: (item) => {
+        const card = new CardClass(
+          {
+            data: item,
+            handleCardClick: () => {
+              popupImg.open({ imgSrcUrl: item.link, namePlaceText: item.name });
+            },
+          },
+          "#template-card",
+          api,
+          user._id
+        );
+        const cardElement = card.generate();
+        cardsContainer.addItem(cardElement);
+      },
+    },
+    ".photo-cards-grid__list"
+  );
+
+  // cardsContainer.createSection();
+  // const testH1 = document.createElement("h1");
+  // testH1.textContent = "HEllo H1";
+  // testH1.classList.add("profile__title");
+});
 
 // Элементы
 const cardsList = document.querySelector(".photo-cards-grid__list");
@@ -153,9 +185,9 @@ Promise.all([getUser(), getCards()])
     profileImgAvatar.src = values[0].avatar;
 
     // Вставка карточек в разметку
-    values[1].forEach((data) => {
-      const card = createCard(data);
-      return cardsList.append(card);
-    });
+    // values[1].forEach((data) => {
+    //   const card = createCard(data);
+    //   return cardsList.append(card);
+    // });
   })
   .catch((err) => console.error(err));
