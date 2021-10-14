@@ -1,6 +1,8 @@
 export class ApiClass {
   constructor(options) {
     this._options = options;
+
+    this.getUser = this.getUser.bind(this);
   }
 
   _checkResponse(res, text) {

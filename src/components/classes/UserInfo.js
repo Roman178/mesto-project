@@ -1,12 +1,13 @@
 export class UserInfo {
-  constructor(profileTitleSelector, profileSubtitleSelector) {
+  constructor(profileTitleSelector, profileSubtitleSelector, profileImgAvatar) {
     this.profileTitle = document.querySelector(profileTitleSelector);
     this.profileSubtitle = document.querySelector(profileSubtitleSelector);
+    this.profileImgAvatar = document.querySelector(profileImgAvatar);
   }
 
   getUserInfo(getUserApi, callback) {
     if (!this.profileTitle.textContent || !this.profileSubtitle.textContent) {
-      getUserApi.then((user) => {
+      getUserApi().then((user) => {
         callback(user);
       });
     } else {
@@ -17,5 +18,12 @@ export class UserInfo {
     }
   }
 
-  setUserInfo() {}
+  setUserInfo(user) {
+    this.profileTitle.textContent = user.name;
+    this.profileSubtitle.textContent = user.about;
+  }
+
+  setAvatar(user) {
+    this.profileImgAvatar.src = user.avatar;
+  }
 }

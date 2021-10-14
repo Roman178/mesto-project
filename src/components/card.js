@@ -1,5 +1,5 @@
 import { openPopup, closePopup } from "./modal";
-import { profileTitle } from "../pages/index";
+// import { profileTitle } from "../pages/index";
 import { deleteCardApi, addLike, removeLike } from "../api/api";
 
 const popupImage = document.querySelector(".popup_type_image");

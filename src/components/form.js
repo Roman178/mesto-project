@@ -18,7 +18,6 @@ export function handleFormEditSubmit(
 
   updateUser(inputTitle.value, inputSubtitle.value)
     .then((response) => {
-      console.log(response);
       title.textContent = response.name;
       subtitle.textContent = response.about;
       closePopup(currPopup);
