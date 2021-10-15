@@ -1,4 +1,4 @@
-export class CardClass {
+export class Card {
   constructor({ data, handleCardClick }, cardSelector, api, userId) {
     this._data = data;
     this._handleCardClick = handleCardClick;
@@ -6,11 +6,11 @@ export class CardClass {
     this._api = api;
     this._userId = userId;
 
-    this.toggleLike = this.toggleLike.bind(this);
+    this._toggleLike = this._toggleLike.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
   }
 
-  toggleLike() {
+  _toggleLike() {
     if (this._likeBtn.classList.contains("card__like-btn_liked")) {
       this._api
         .removeLike(this._data._id)
@@ -41,7 +41,7 @@ export class CardClass {
 
   setEventListeners() {
     this._cardImg.addEventListener("click", this._handleCardClick);
-    this._likeBtn.addEventListener("click", this.toggleLike);
+    this._likeBtn.addEventListener("click", this._toggleLike);
     if (this._deleteBtn) {
       this._deleteBtn.addEventListener("click", this.deleteCard);
     }

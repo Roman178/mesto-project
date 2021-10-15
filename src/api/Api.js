@@ -1,7 +1,6 @@
-export class ApiClass {
+export class Api {
   constructor(options) {
     this._options = options;
-
     this.getUser = this.getUser.bind(this);
   }
 
