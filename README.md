@@ -9,3 +9,14 @@
 ### Стек
 
 HTML/CSS/BEM/JavaScript
+
+### Дополнительно
+
+Проект написан с применением парадигмы ООП.
+
+### Соавтор проекта
+
+Алексей Вишневский
+
+- GitHub: https://github.com/LexorV
+- Email: alex170993@yandex.ru
