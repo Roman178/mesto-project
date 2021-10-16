@@ -17,5 +17,6 @@ HTML/CSS/BEM/JavaScript
 ### Соавтор проекта
 
 Алексей Вишневский
-GitHub: https://github.com/LexorV
-Email: alex170993@yandex.ru
+
+- GitHub: https://github.com/LexorV
+- Email: alex170993@yandex.ru
