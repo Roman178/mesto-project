@@ -15,12 +15,15 @@ import {
   formIsOpened,
 } from "../constants/configs.js";
 
+// Создание эксемпляров Api, UserInfo, PopupWithImage
 const api = new Api(apiConfigs);
 const userInfo = new UserInfo(...userConfigs);
 const popupImg = new PopupWithImage(".popup_type_image");
 
+// Созд-е попапа с формой редактирования профиля
 const editProfileForm = new PopupWithForm(
   ".popup_type_edit",
+  // передача ф-ции handleSubmit
   (e, submitBtn) => {
     e.preventDefault();
 
@@ -35,8 +38,10 @@ const editProfileForm = new PopupWithForm(
   }
 );
 
+// Созд-е попапа с формой изменения аватарки
 const changeAvaForm = new PopupWithForm(
   ".popup_type_avatar",
+  // передача ф-ции handleSubmit
   (e, submitBtn) => {
     e.preventDefault();
 
@@ -51,26 +56,34 @@ const changeAvaForm = new PopupWithForm(
   }
 );
 
+// создание валидатора формы редактирования профиля
 const validatorEditProfileForm = new FormValidator(
   formConfigs,
   editProfileForm.getFormDomEl()
 );
 
+// создание валидатора формы изменения аватарки
 const validatorChangeAvaForm = new FormValidator(
   formConfigs,
   changeAvaForm.getFormDomEl()
 );
 
+// установка слушателей на элементы попапов (клики, сабмиты).
 popupImg.setEventListeners();
 editProfileForm.setEventListeners();
 changeAvaForm.setEventListeners();
+
+// включение валидации форм
 validatorEditProfileForm.enableValidation();
 validatorChangeAvaForm.enableValidation();
 
+// кнопки редактирования профиля и изм-я аватарки
 const editOpenBtn = document.querySelector(".profile__edit-btn");
 const updAvatarOpenBtn = document.querySelector(".profile__btn-change-avatar");
 
+// добавляем слушателей на 2 кнопки выше
 updAvatarOpenBtn.addEventListener("click", () => {
+  // кастомный ивент слушается когда открывается попап, запускается ф-ция проверки инпутов и рендера ошибки (или не рендера, если данные валидны)
   changeAvaForm.getFormDomEl().dispatchEvent(formIsOpened);
   changeAvaForm.open();
 });
@@ -87,10 +100,13 @@ editOpenBtn.addEventListener("click", () => {
   editProfileForm.open();
 });
 
+// скачиваем данные
 Promise.all([api.getUser(), api.getInitialCards()]).then(([user, cards]) => {
+  // т.к. эл-ты рисуются на основании скаченных данных, объявляем экз Section
   const cardsContainer = new Section(
     {
       items: cards.reverse(),
+
       renderer: (item) => {
         const card = new Card(
           {
@@ -110,11 +126,14 @@ Promise.all([api.getUser(), api.getInitialCards()]).then(([user, cards]) => {
     ".photo-cards-grid__list"
   );
 
+  // создаем секцию
   cardsContainer.createSection();
 
+  // устанавливаем данные в профиль пользователя
   userInfo.setUserInfo(user);
   userInfo.setAvatar(user);
 
+  // Созд-е попапа с формой добавления карточки. Создается здесь, т.к. нужен user id.
   const addCardForm = new PopupWithForm(".popup_type_add", (e, submitBtn) => {
     e.preventDefault();
     const textBtn = submitBtn.textContent;
