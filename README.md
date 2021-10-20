@@ -18,5 +18,5 @@ HTML/CSS/BEM/JavaScript
 
 Алексей Вишневский
 
-- GitHub: https://github.com/LexorV
++ GitHub: https://github.com/LexorV
 - Email: alex170993@yandex.ru
