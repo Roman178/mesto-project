@@ -12,6 +12,7 @@ export class UserInfo {
     return {
       name: this.profileTitle.textContent,
       about: this.profileSubtitle.textContent,
+      imgSrcAvatar: this.profileImgAvatar.src,
     };
   }
 
