@@ -6,7 +6,7 @@ export class FormValidator {
     this._submitBtn = this._form.querySelector(this._configs.sbmtBtnSelector);
   }
 
-  _showInputError(input) {
+  _checkInputValid(input) {
     const errorEl = this._form.querySelector(`#${input.id}-error`);
     errorEl.textContent = input.validationMessage;
 
@@ -33,22 +33,22 @@ export class FormValidator {
     this._form.addEventListener("formIsOpened", () => {
       this._toggleButtonState();
       this._inputList.forEach((i) => {
-        if (i.value) this._showInputError(i);
+        if (i.value) this._checkInputValid(i);
       });
     });
 
     this._inputList.forEach((i) => {
       i.addEventListener("input", (evt) => {
         this._toggleButtonState();
-        this._showInputError(i);
+        this._checkInputValid(i);
       });
       i.addEventListener("blur", (evt) => {
         this._toggleButtonState();
-        this._showInputError(i);
+        this._checkInputValid(i);
       });
       i.addEventListener("focus", (evt) => {
         this._toggleButtonState();
-        this._showInputError(i);
+        this._checkInputValid(i);
       });
     });
   }

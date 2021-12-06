@@ -7,7 +7,7 @@ export class Card {
     this._userId = userId;
 
     this._toggleLike = this._toggleLike.bind(this);
-    this.deleteCard = this.deleteCard.bind(this);
+    this._deleteCard = this._deleteCard.bind(this);
   }
 
   _toggleLike() {
@@ -30,20 +30,21 @@ export class Card {
     }
   }
 
-  deleteCard() {
+  _deleteCard() {
     this._api
       .deleteCardApi(this._data._id)
       .then(() => {
         this._card.remove();
+        this._card = null;
       })
       .catch((err) => console.error(err));
   }
 
-  setEventListeners() {
+  _setEventListeners() {
     this._cardImg.addEventListener("click", this._handleCardClick);
     this._likeBtn.addEventListener("click", this._toggleLike);
     if (this._deleteBtn) {
-      this._deleteBtn.addEventListener("click", this.deleteCard);
+      this._deleteBtn.addEventListener("click", this._deleteCard);
     }
   }
 
@@ -76,7 +77,7 @@ export class Card {
       this._likeBtn.classList.add("card__like-btn_liked");
     }
 
-    this.setEventListeners();
+    this._setEventListeners();
 
     return this._card;
   }

@@ -7,6 +7,7 @@ export class PopupWithImage extends Popup {
 
   open({ imgSrcUrl, namePlaceText }) {
     this._popup.querySelector(".popup__img").src = imgSrcUrl;
+    this._popup.querySelector(".popup__img").alt = namePlaceText;
     this._popup.querySelector(".popup__caption").textContent = namePlaceText;
     super.open();
   }
