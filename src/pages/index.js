@@ -55,7 +55,6 @@ const changeAvaPopup = new PopupWithForm(
       .updateAvatar(inputValues.avatarLink)
       .then((user) => {
         userInfo.setAvatar(user);
-        submitBtn.textContent = textBtn;
         changeAvaPopup.close();
       })
       .catch((error) => console.error(error))
