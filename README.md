@@ -1,7 +1,5 @@
 # Проект: Место
 
-Проект развернут [здесь](https://roman178.github.io/mesto/index.html).
-
 ### Обзор
 
 Данный сервис позволяет добавлять фотографии красивых мест России в свой профиль, а также отмечать понравившиеся.
@@ -18,5 +16,6 @@ HTML/CSS/BEM/JavaScript
 
 Алексей Вишневский
 
-+ GitHub: https://github.com/LexorV
-- Email: alex170993@yandex.ru
+- GitHub: https://github.com/LexorV
+
+* Email: alex170993@yandex.ru
